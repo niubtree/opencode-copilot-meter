@@ -1,0 +1,41 @@
+{
+  "name": "opencode-copilot-meter",
+  "version": "0.1.0",
+  "description": "OpenCode plugin that tracks per-turn Copilot token usage, premium request billing, and remaining quota.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --format esm --target node --external node:fs && bunx tsc --emitDeclarationOnly --noEmit false --outDir dist",
+    "install:plugin": "bun -e \"import { execSync } from 'node:child_process'; execSync(process.platform === 'win32' ? 'pwsh local-install.ps1 --build' : 'bash local-install.sh --build', { stdio: 'inherit' })\"",
+    "install:global": "bun run install:plugin",
+    "prepublishOnly": "bun run build",
+    "copilot:show-token": "bun -e \"import { execSync } from 'node:child_process'; execSync(process.platform === 'win32' ? 'pwsh scripts/copilot-show-token.ps1' : 'bash scripts/copilot-show-token.sh', { stdio: 'inherit' })\"",
+    "copilot:set-token": "bun -e \"import { execSync } from 'node:child_process'; execSync(process.platform === 'win32' ? 'pwsh scripts/copilot-set-token.ps1' : 'bash scripts/copilot-set-token.sh', { stdio: 'inherit' })\"",
+    "copilot:set-quota-endpoint": "bun -e \"import { execSync } from 'node:child_process'; execSync(process.platform === 'win32' ? 'pwsh scripts/copilot-set-quota-endpoint.ps1' : 'bash scripts/copilot-set-quota-endpoint.sh', { stdio: 'inherit' })\"",
+    "copilot:show-quota": "bun -e \"import { execSync } from 'node:child_process'; execSync(process.platform === 'win32' ? 'pwsh scripts/copilot-show-quota.ps1' : 'bash scripts/copilot-show-quota.sh', { stdio: 'inherit' })\""
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "copilot",
+    "token-usage",
+    "premium-requests",
+    "quota",
+    "billing"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@opencode-ai/plugin": "latest",
+    "@types/bun": "latest"
+  }
+}
